@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>JavaScript Closures by Anton Ausiyevich</title>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/monokai.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1> JavaScript Closures</h1>
+			</section>
+
+			<section>
+				<h3> 1. The scope</h3>
+			</section>
+
+			<section data-transition="slide-in none-out">
+				1. The scope
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					function foo() {
+						// function scope
+						let count = 0;
+						console.log(count);
+					  }
+					  
+					  foo();
+					  console.log(count);
+				</code></pre>
+			</section>
+
+			<section data-transition="none-in none-out">
+				1. The scope
+				<pre><code class="hljs" data-trim data-line-numbers="3">
+						function foo() {
+							// function scope
+							let count = 0;
+							console.log(count); 
+						  }
+						  
+						  foo();
+						  console.log(count); 
+					</code></pre>
+			</section>
+
+			<section data-transition="none-in slide-out">
+				1. The scope
+				<pre><code class="hljs" data-trim data-line-numbers="4,8">
+							function foo() {
+								// function scope
+								let count = 0;
+								console.log(count); // logs 0
+							  }
+							  
+							  foo();
+							  console.log(count); // ReferenceError: count is not defined
+				</code></pre>
+			</section>
+
+
+			<section data-transition="slide-in none-out">
+				1. The scope
+				<pre><code class="hljs" data-trim data-line-numbers="">
+			function foo() {
+				// "foo" function scope
+				let count = 0;
+				console.log(count); 
+			  }
+			  
+			  function bar() {
+				// "bar" function scope
+				let count = 1;
+				console.log(count); 
+			  }
+			  
+			  foo();
+			  bar();
+			</code></pre>
+			</section>
+
+			<section data-transition="none-in slide-out">
+				1. The scope
+				<pre><code class="hljs" data-trim data-line-numbers="4,10">
+					function foo() {
+						// "foo" function scope
+						let count = 0;
+						console.log(count); // logs 0
+					  }
+					  
+					  function bar() {
+						// "bar" function scope
+						let count = 1;
+						console.log(count); // logs 1
+					  }
+					  
+					  foo();
+					  bar();
+					</code></pre>
+			</section>
+
+			<section>
+				<h3>2. Scopes nesting</h3>
+			</section>
+
+			<section data-transition="slide-in none-out">
+				2. Scopes nesting
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					function outerFunc() {
+						// the outer scope
+						let outerVar = 'I am outside!';
+						
+						function innerFunc() {
+							// the inner scope
+							console.log(outerVar); // logs "I am outside!"
+						}
+						
+						innerFunc();
+						}
+						
+					outerFunc();
+				</code></pre>
+			</section>
+
+			<section data-transition="none-in slide-out">
+				2. Scopes nesting
+				<pre><code class="hljs" data-trim data-line-numbers="7">
+					function outerFunc() {
+						// the outer scope
+						let outerVar = 'I am outside!';
+						
+						function innerFunc() {
+							// the inner scope
+							console.log(outerVar); // logs "I am outside!"
+						}
+						
+						innerFunc();
+						}
+						
+					outerFunc();
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h3>3. Lexical scope</h3>
+			</section>
+			<section>
+				3. Lexical scope
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					function outerFunc() {
+						// the outer scope
+						let outerVar = 'I am outside!';
+						
+						function innerFunc() {
+							// the inner scope
+							console.log(outerVar); // logs "I am outside!"
+						}
+						
+						innerFunc();
+						}
+						
+					outerFunc();
+					</code></pre>
+			</section>
+
+
+
+
+
+
+			<section>
+				<h3>4. The closure</h3>
+			</section>
+
+			<section data-transition="slide-in none-out">
+				4. The closure
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					function outerFunc() {
+						// the outer scope
+						let outerVar = 'I am outside!';
+						
+						function innerFunc() {
+							// the inner scope
+							console.log(outerVar); // logs "I am outside!"
+						}
+						
+						innerFunc();
+						}
+						
+					outerFunc();
+					</code></pre>
+			</section>
+
+			<section data-transition="none-in none-out">
+				4. The closure
+				<pre><code class="hljs" data-trim data-line-numbers="8,11,12">
+						function outerFunc() {
+							let outerVar = 'I am outside!';
+							
+							function innerFunc() {
+								console.log(outerVar); // logs "I am outside!"
+							}
+							
+							return innerFunc;
+							}
+							
+						const myInnerFunc = outerFunc();
+						myInnerFunc();
+						</code></pre>
+			</section>
+			<section data-transition="none-in slide-out">
+				4. The closure
+				<pre><code class="hljs" data-trim data-line-numbers="2,5">
+					function outerFunc() {
+						let outerVar = 'I am outside!';
+						
+						function innerFunc() {
+							console.log(outerVar); // logs "I am outside!"
+						}
+						
+						return innerFunc;
+						}
+						
+					const myInnerFunc = outerFunc();
+					myInnerFunc();
+				</code></pre>
+			</section>
+
+
+			<section>
+				<h3>5. Сlosure examples</h3>
+			</section>
+
+			<section data-transition="slide-in none-out">
+				5.1 Event handler
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					let countClicked = 0;
+
+					myButton.addEventListener('click', function handleClick() {
+						countClicked++;
+						myText.innerText = `You clicked ${countClicked} times`;
+					});
+				</code></pre>
+			</section>
+
+			<section data-transition="none-in slide-out">
+				5.1 Event handler
+				<pre><code class="hljs" data-trim data-line-numbers="1,4">
+					let countClicked = 0;
+
+					myButton.addEventListener('click', function handleClick() {
+						countClicked++;
+						myText.innerText = `You clicked ${countClicked} times`;
+					});
+				</code></pre>
+			</section>
+
+
+			<section data-transition="slide-in none-out">
+				5.2 Callbacks
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					const message = 'Hello, World!';
+
+					setTimeout(function callback() {
+						console.log(message); // logs "Hello, World!"
+					}, 1000);
+				</code></pre>
+			</section>
+
+			<section data-transition="none-in slide-out">
+				5.2 Callbacks
+				<pre><code class="hljs" data-trim data-line-numbers="1,4">
+					const message = 'Hello, World!';
+
+					setTimeout(function callback() {
+						console.log(message); // logs "Hello, World!"
+					}, 1000);
+				</code></pre>
+			</section>
+
+			<section>
+				5.3 Functional programming
+				<pre><code class="hljs" data-trim data-line-numbers="">
+					function multiply(a) {
+						return function executeMultiply(b) {
+							return a * b;
+						}
+					}
+						
+					const double = multiply(2);
+					double(3); // => 6
+					double(5); // => 10
+					
+					const triple = multiply(3);
+					triple(4); // => 12
+				</code></pre>
+			</section>
+
+			<section>
+				<h3>One more thing...</h3>
+			</section>
+
+			<section>
+				<p>Сlosure analogy</p>
+				<img src="./giphy.gif" alt="backpack">
+			</section>
+
+			<section>
+				<h2>Thank you <br /> for your <br /> attention</h2>
+			</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</div>
+	</div>
+	<script src="js/reveal.js">
+	</script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true }
+			]
+		});
+	</script>
+</body>
+
+</html>
